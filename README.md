@@ -4,9 +4,13 @@ A simple project demonstrating how to test REST APIs using alternatives to Postm
 
 Features:
 curl Examples: Pre-written curl commands for GET, POST, PUT, and DELETE requests.
+
 httpie Usage: Sample scripts and installation guide for httpie, a modern command-line HTTP client.
+
 Error Handling Tips: Guides for debugging common connection errors, such as "port not reachable."
+
 Cross-Platform Support: Instructions compatible with Windows, Linux, and MacOS.
+
 Technologies:
 Python 3 (optional for advanced scripting)
 Command Line Tools (curl and httpie)
