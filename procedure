@@ -1,0 +1,123 @@
+### Steps to Build and Test the Project
+
+#### 1. Setting Up the Python Environment
+   - Install Python 3 if it's not already installed on your system.
+   - Create a virtual environment:
+     ```bash
+     python -m venv venv
+     ```
+   - Activate the virtual environment:
+     - On Windows:
+       ```bash
+       venv\Scripts\activate
+       ```
+     - On MacOS/Linux:
+       ```bash
+       source venv/bin/activate
+       ```
+   - Install necessary Python libraries:
+     ```bash
+     pip install Flask
+     ```
+
+---
+
+#### 2. Writing the Python Code
+   - Create a file named `app.py`.
+   - Write the Python code for a REST API using Flask:
+     ```python
+     from flask import Flask, jsonify, request
+
+     app = Flask(__name__)
+
+     # Sample data
+     books = [
+         {"id": 1, "title": "1984", "author": "George Orwell"},
+         {"id": 2, "title": "To Kill a Mockingbird", "author": "Harper Lee"},
+     ]
+
+     # Endpoint to get all books
+     @app.route('/books', methods=['GET'])
+     def get_books():
+         auth_token = request.headers.get('Authorization')
+         if auth_token == "admin_token":
+             return jsonify({"books": books}), 200
+         else:
+             return jsonify({"error": "Unauthorized"}), 401
+
+     # Run the Flask app
+     if __name__ == '__main__':
+         app.run(debug=True)
+     ```
+
+---
+
+#### 3. Running the Flask Application
+   - Open a terminal or command prompt.
+   - Navigate to the directory containing the `app.py` file.
+   - Start the Flask server:
+     ```bash
+     python app.py
+     ```
+   - By default, the Flask app runs on `http://127.0.0.1:5000`.
+
+---
+
+#### 4. Testing the API
+
+##### Option A: Using `requests` Library in Python
+   - Create a new file named `test_api.py`.
+   - Write the following code to test the `/books` endpoint:
+     ```python
+     import requests
+
+     url = "http://127.0.0.1:5000/books"
+     headers = {"Authorization": "admin_token"}
+
+     response = requests.get(url, headers=headers)
+     if response.status_code == 200:
+         print("Books:", response.json())
+     else:
+         print("Error:", response.status_code, response.text)
+     ```
+
+   - Run the script:
+     ```bash
+     python test_api.py
+     ```
+
+##### Option B: Using `curl`
+   - Open a terminal or command prompt.
+   - Test the endpoint using the following command:
+     ```bash
+     curl -X GET http://127.0.0.1:5000/books -H "Authorization: admin_token"
+     ```
+
+##### Option C: Using `httpie`
+   - Install `httpie`:
+     ```bash
+     pip install httpie
+     ```
+   - Test the endpoint:
+     ```bash
+     http GET http://127.0.0.1:5000/books Authorization:admin_token
+     ```
+
+---
+
+#### 5. Debugging
+   - If there are errors:
+     - Check if the Flask server is running.
+     - Verify the URL and port number (`http://127.0.0.1:5000`).
+     - Ensure `Authorization` headers are correctly set.
+
+---
+
+#### 6. Enhancements
+   - Add new API endpoints for more functionality (e.g., POST, PUT, DELETE).
+   - Document the API using tools like Swagger or Postman collections.
+   - Deploy the API to a cloud platform like AWS, Azure, or Heroku.
+
+--- 
+
+This structured approach takes you from writing Python code to thoroughly testing the API using different methods, ensuring a comprehensive learning experience! 
