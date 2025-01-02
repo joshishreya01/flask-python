@@ -1,0 +1,103 @@
+### Steps to Test the API Using Python
+
+After writing and running your API server, follow these steps to test the endpoints using Python:
+
+---
+
+####  1. Create a Testing Script
+   - Create a new Python file named `test_api.py` in the same project directory where your `app.py` resides.
+
+#### 2. Import Necessary Libraries
+   - Use Python's `requests` library to make HTTP calls. If not already installed, run:
+     ```bash
+     pip install requests
+     ```
+
+#### 3. Write Code to Test the API
+   - Below is a sample script for testing the `/books` endpoint:
+
+   ```python
+   import requests
+
+   # Base URL for the API
+   BASE_URL = "http://127.0.0.1:5000"
+
+   # Endpoint and Headers
+   endpoint = "/books"
+   headers = {"Authorization": "admin_token"}  # Replace with your actual token
+
+   # 1. Test the GET /books endpoint
+   print("Testing GET /books endpoint...")
+   response = requests.get(f"{BASE_URL}{endpoint}", headers=headers)
+
+   if response.status_code == 200:
+       print("Success! Books Data:")
+       print(response.json())  # Display the API response
+   elif response.status_code == 401:
+       print("Unauthorized: Check your Authorization header.")
+   else:
+       print(f"Failed with status code: {response.status_code}")
+       print(response.text)
+
+   # 2. Testing without an Authorization header
+   print("\nTesting unauthorized request...")
+   unauthorized_response = requests.get(f"{BASE_URL}{endpoint}")
+   if unauthorized_response.status_code == 401:
+       print("Unauthorized access properly handled by the API.")
+   else:
+       print(f"Unexpected status code: {unauthorized_response.status_code}")
+       print(unauthorized_response.text)
+   ```
+
+---
+
+#### 4. Run the Test Script
+   - Make sure the Flask server is running (`python app.py`).
+   - Open a terminal, navigate to the project directory, and run:
+     ```bash
+     python test_api.py
+     ```
+
+---
+
+#### 5. Observe the Output
+   - Expected Output:
+     - For valid `Authorization`:
+       ```
+       Testing GET /books endpoint...
+       Success! Books Data:
+       {'books': [{'id': 1, 'title': '1984', 'author': 'George Orwell'}, ...]}
+       ```
+
+     - For missing or invalid `Authorization`:
+       ```
+       Testing unauthorized request...
+       Unauthorized access properly handled by the API.
+       ```
+
+---
+
+#### 6. Extending Tests for Additional Endpoints
+   - If your API includes other endpoints (e.g., `POST`, `PUT`, or `DELETE`), you can extend the script to test those as well. Example:
+
+   ```python
+   # Test POST /books (Add a new book)
+   print("\nTesting POST /books endpoint...")
+   new_book = {"id": 3, "title": "Brave New World", "author": "Aldous Huxley"}
+   post_response = requests.post(
+       f"{BASE_URL}{endpoint}", json=new_book, headers=headers
+   )
+
+   if post_response.status_code == 201:
+       print("Book added successfully!")
+       print(post_response.json())
+   else:
+       print(f"Failed with status code: {post_response.status_code}")
+       print(post_response.text)
+   ```
+
+---
+
+
+
+This method provides a systematic way to validate the functionality of your API programmatically using Python.
